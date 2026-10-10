@@ -763,7 +763,7 @@
                 "exec": [
                   "// Send 5 failed logins first, so the request below is the 6th in one minute.",
                   "const failedLogin = {",
-                  "    url: pm.collectionVariables.get('base_url') + '/auth/login',",
+                  "    url: pm.variables.get('base_url') + '/auth/login',",
                   "    method: 'POST',",
                   "    header: { 'Content-Type': 'application/json', 'Accept': 'application/json' },",
                   "    body: { mode: 'raw', raw: JSON.stringify({ email: 'kavitha@eventhub.test', password: 'wrong-password' }) }",
