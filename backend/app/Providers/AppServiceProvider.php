@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +22,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Whole API: 120 requests per minute for each user (or IP for guests).
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(120)->by(auth('api')->id() ?: $request->ip());
+        });
+
+        // Login: 5 attempts per minute for each email and IP address,
+        // which slows down password guessing.
+        RateLimiter::for('login', function (Request $request) {
+            return Limit::perMinute(5)->by(strtolower((string) $request->input('email')).'|'.$request->ip());
+        });
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Middleware\EnsureUserHasRole;
+use App\Http\Middleware\EnsureValidApiKey;
+use App\Http\Middleware\LogApiRequests;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -20,9 +22,16 @@ return Application::configure(basePath: dirname(__DIR__))
         // This is an API: never redirect guests to a login page.
         $middleware->redirectGuestsTo(null);
 
-        // Short name for the role check, used as 'role:admin,organiser'.
+        // Logging middleware: records every API request.
+        $middleware->append(LogApiRequests::class);
+
+        // Rate limiting: applies the 'api' limiter to every API route.
+        $middleware->throttleApi();
+
+        // Short names used on routes.
         $middleware->alias([
             'role' => EnsureUserHasRole::class,
+            'api.key' => EnsureValidApiKey::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
@@ -48,17 +57,19 @@ return Application::configure(basePath: dirname(__DIR__))
                 ], 401);
             }
 
-            $status = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : 500;
+            $isHttpError = $e instanceof HttpExceptionInterface;
+            $status = $isHttpError ? $e->getStatusCode() : 500;
 
             $message = match ($status) {
                 403 => 'Forbidden. You are not allowed to do this.',
                 404 => 'Resource not found.',
                 405 => 'Method not allowed for this URL.',
-                429 => 'Too many requests. Please slow down.',
+                429 => 'Too many requests. Please wait a minute and try again.',
                 500 => 'Server error. Please try again later.',
                 default => $e->getMessage() ?: 'Request failed.',
             };
 
-            return response()->json(['message' => $message], $status);
+            // Keep headers such as Retry-After on rate-limit responses.
+            return response()->json(['message' => $message], $status, $isHttpError ? $e->getHeaders() : []);
         });
     })->create();
