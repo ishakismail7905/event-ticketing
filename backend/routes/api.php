@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VenueController;
@@ -31,4 +32,9 @@ Route::middleware('auth:api')->group(function () {
 
     // Only an admin can delete a venue.
     Route::delete('/venues/{venue}', [VenueController::class, 'destroy'])->middleware('role:admin');
+
+    // Bookings: every role can list, view and update what it is allowed to see.
+    Route::apiResource('bookings', BookingController::class)->only(['index', 'show', 'update']);
+    Route::post('/bookings', [BookingController::class, 'store'])->middleware('role:customer');
+    Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->middleware('role:admin');
 });
