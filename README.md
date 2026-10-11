@@ -6,9 +6,9 @@ EventHub is a RESTful web API for managing venues, events, ticket availability a
 
 ## Team
 
-| Name | Student ID | Frontend role | Folder |
-|---|---|---|---|
-| _to fill in_ | _to fill in_ | _to fill in_ | _to fill in_ |
+| Name | Student ID |
+|---|---|
+| ISHAK BIN ISMAIL | AM2512021928 |
 | _to fill in_ | _to fill in_ | _to fill in_ | _to fill in_ |
 | _to fill in_ | _to fill in_ | _to fill in_ | _to fill in_ |
 | _to fill in_ | _to fill in_ | _to fill in_ | _to fill in_ |
