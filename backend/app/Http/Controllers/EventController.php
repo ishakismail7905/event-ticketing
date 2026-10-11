@@ -16,8 +16,8 @@ class EventController extends Controller
     /**
      * GET /api/events (public)
      * Guests and customers only see published events.
-     * Optional query: search, category, venue_id, status, date_from, date_to,
-     * available_only, sort, direction, per_page, page.
+     * Optional query: search, category, venue_id, status, organiser_id,
+     * date_from, date_to, available_only, sort, direction, per_page, page.
      */
     public function index(Request $request): JsonResponse
     {
@@ -26,6 +26,7 @@ class EventController extends Controller
             'category' => ['nullable', 'string', 'max:50'],
             'venue_id' => ['nullable', 'integer'],
             'status' => ['nullable', Rule::in(Event::STATUSES)],
+            'organiser_id' => ['nullable', 'integer'],
             'date_from' => ['nullable', 'date'],
             'date_to' => ['nullable', 'date', 'after_or_equal:date_from'],
             'available_only' => ['nullable', 'boolean'],
@@ -42,6 +43,7 @@ class EventController extends Controller
             ->with(['venue:id,name,city', 'organiser:id,name'])
             ->when(! $canSeeAll, fn ($query) => $query->where('status', 'published'))
             ->when($canSeeAll && isset($filters['status']), fn ($query) => $query->where('status', $filters['status']))
+            ->when($canSeeAll && isset($filters['organiser_id']), fn ($query) => $query->where('organiser_id', $filters['organiser_id']))
             ->when($filters['search'] ?? null, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('title', 'like', "%{$search}%")

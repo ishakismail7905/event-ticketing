@@ -822,6 +822,7 @@ REST API for the Event Ticketing and Venue Booking System. Every request and res
 | `category` | string | No | Exact category. |
 | `venue_id` | integer | No |  |
 | `status` | string | No | `draft`, `published` or `cancelled`. Admin, organiser and staff only. |
+| `organiser_id` | integer | No | Events owned by this organiser. Admin, organiser and staff only. |
 | `date_from` | date | No | Events starting on or after this date. |
 | `date_to` | date | No | Events starting on or before this date. |
 | `available_only` | boolean | No | `1` to hide sold-out events. |

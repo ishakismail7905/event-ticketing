@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EventHub</title>
+    <link rel="stylesheet" href="vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+    <a class="visually-hidden-focusable skip-link" href="#view">Skip to content</a>
+
+    <!-- Top navigation. The links are filled in by js/app.js to match the user's role. -->
+    <nav class="navbar navbar-expand-lg site-nav" aria-label="Main">
+        <div class="container">
+            <a class="navbar-brand" href="#/events">EventHub</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-links"
+                    aria-controls="nav-links" aria-expanded="false" aria-label="Open menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="nav-links">
+                <ul class="navbar-nav me-auto" id="nav-main"></ul>
+                <div class="d-flex align-items-center gap-2" id="nav-user"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Each page is drawn into this element by the router. -->
+    <main class="container py-4" id="view" tabindex="-1"></main>
+
+    <footer class="container site-footer">
+        EventHub, SWC3633/SWC4443 Web API Development project. Frontend by <span id="footer-author">your name and student ID</span>.
+    </footer>
+
+    <!-- Short messages such as "Booking confirmed" appear here. -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toasts" aria-live="polite"></div>
+
+    <!-- One shared pop-up window, reused for forms and confirmations. -->
+    <div class="modal fade" id="app-modal" tabindex="-1" aria-labelledby="app-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5" id="app-modal-title"></h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="app-modal-body"></div>
+                <div class="modal-footer" id="app-modal-footer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="vendor/bootstrap.bundle.min.js"></script>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
