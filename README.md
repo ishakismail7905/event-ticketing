@@ -9,7 +9,7 @@ EventHub is a RESTful web API for managing venues, events, ticket availability a
 | Name | Student ID |
 |---|---|
 | ISHAK BIN ISMAIL | AM2512021928 |
-| _to fill in_ | _to fill in_ | _to fill in_ | _to fill in_ |
+| MUHAMMAD SHIHABUDDIN AL-FIKRI BIN ANUAR | AM2512021974 | _to fill in_ | _to fill in_ |
 | _to fill in_ | _to fill in_ | _to fill in_ | _to fill in_ |
 | _to fill in_ | _to fill in_ | _to fill in_ | _to fill in_ |
 
