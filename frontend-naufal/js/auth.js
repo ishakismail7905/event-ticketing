@@ -5,8 +5,8 @@ const STUDENT = { name: 'Ahmad Naufal bin Ahmad Fuad', id: 'AM2512021850' };
 
 // Which page each role lands on after login (we'll change these as pages get built)
 const HOME_PAGE = {
-  customer: 'index.html',
-  staff: 'index.html',
+  customer: 'bookings.html',
+  staff: 'bookings.html',
   organiser: 'index.html',
   admin: 'index.html',
 };

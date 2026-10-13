@@ -49,3 +49,14 @@ function formatDateTime(value) {
 function formatPrice(value) {
   return Number(value) === 0 ? 'Free' : 'RM ' + Number(value).toFixed(2);
 }
+function paginationHtml(current, last) {
+  if (last <= 1) return '';
+  const item = (page, label, disabled = false, active = false) => `
+    <li class="page-item ${disabled ? 'disabled' : ''} ${active ? 'active' : ''}">
+      <button class="page-link" data-page="${page}">${label}</button>
+    </li>`;
+  let html = item(current - 1, 'Previous', current === 1);
+  for (let p = 1; p <= last; p++) html += item(p, p, false, p === current);
+  html += item(current + 1, 'Next', current === last);
+  return html;
+}
