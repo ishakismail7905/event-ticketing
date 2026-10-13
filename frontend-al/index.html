@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventHub | Event Ticketing System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="navbar">
+        <a href="#home" class="brand">EventHub<span>.</span></a>
+
+        <nav class="nav-links" id="main-nav">
+            <a href="#events" data-nav="events">Explore Events</a>
+            <a href="#my-bookings" data-nav="bookings" id="my-bookings-link">My Bookings</a>
+        </nav>
+
+        <div class="nav-actions" id="auth-actions">
+            <button type="button" class="btn-login" id="login-btn">Log in</button>
+            <button type="button" class="btn-primary" id="signup-btn">Register</button>
+        </div>
+    </header>
+
+    <main id="home">
+        <section class="intro">
+            <h1>Event ticketing system</h1>
+            <p>Discover events, manage bookings, and organise your events.</p>
+        </section>
+
+        <section class="events-section" id="events">
+            <div class="search-row">
+                <input type="search" id="search-input" placeholder="Search events..." aria-label="Search events">
+
+                <select id="sort-select" aria-label="Sort events">
+                    <option value="default">Sort by: Default</option>
+                    <option value="name">Name: A–Z</option>
+                    <option value="price">Price: Low to high</option>
+                </select>
+            </div>
+
+            <div class="category-list" id="category-list">
+                <button type="button" class="category-btn selected" data-category="all">All events</button>
+                <button type="button" class="category-btn" data-category="music">Music</button>
+                <button type="button" class="category-btn" data-category="technology">Technology</button>
+                <button type="button" class="category-btn" data-category="arts">Arts & Culture</button>
+                <button type="button" class="category-btn" data-category="food">Food & Festival</button>
+            </div>
+
+            <div class="section-title">
+                <h2>Events</h2>
+                <span id="event-count">Loading events...</span>
+            </div>
+
+            <div id="events-container" class="events-grid">
+                <p class="loading-state">Loading events...</p>
+            </div>
+
+            <div class="empty-state" id="empty-state" hidden>
+                <h3>No events found</h3>
+                <p>Try another search or category.</p>
+            </div>
+        </section>
+
+        <!-- Management area: shown according to the logged-in user's role -->
+        <section class="management-section" id="management-section" hidden>
+            <div class="section-title">
+                <div>
+                    <h2 id="management-heading">Management</h2>
+                    <p id="management-description">Manage system records.</p>
+                </div>
+            </div>
+
+            <div class="management-tabs" id="management-tabs"></div>
+
+            <div class="management-toolbar">
+                <h3 id="management-list-heading">Records</h3>
+                <button type="button" class="btn-primary" id="management-create-btn">
+                    Create new
+                </button>
+            </div>
+
+            <div id="management-message" class="management-message" role="status"></div>
+
+            <div id="management-form-container" hidden>
+                <form id="management-form">
+                    <div id="management-form-fields" class="management-form-fields"></div>
+
+                    <div class="management-form-actions">
+                        <button type="submit" class="btn-primary" id="management-save-btn">
+                            Save
+                        </button>
+                        <button type="button" class="btn-login" id="management-cancel-btn">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="management-table-container" class="management-table-container">
+                <p class="muted-message">Choose a management section.</p>
+            </div>
+        </section>
+
+        <section class="bookings-section" id="my-bookings">
+            <div class="section-title">
+                <h2>My bookings</h2>
+                <button type="button" class="btn-login" id="refresh-bookings-btn">Refresh</button>
+            </div>
+
+            <div id="bookings-container">
+                <p class="muted-message">Log in to view your bookings.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <a href="#home" class="brand">EventHub<span>.</span></a>
+        <p>Discover events. Book with ease.</p>
+    </footer>
+
+    <!-- Event details -->
+    <div class="modal-backdrop" id="event-modal" hidden>
+        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div class="modal-header">
+                <span class="section-kicker">EVENT DETAILS</span>
+                <button type="button" class="modal-close" id="close-modal" aria-label="Close event details">&times;</button>
+            </div>
+
+            <div class="modal-content" id="modal-content"></div>
+
+            <div class="modal-footer">
+                <label class="quantity-control" id="quantity-control">
+                    <span>Tickets</span>
+                    <input type="number" id="ticket-quantity" min="1" max="10" value="1">
+                </label>
+
+                <button type="button" class="btn-login" id="modal-back">Close</button>
+                <button type="button" class="btn-primary" id="modal-book">Book ticket</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Login and registration -->
+    <div class="modal-backdrop" id="auth-modal" hidden>
+        <section class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+            <div class="modal-header">
+                <span class="section-kicker">EVENTHUB ACCOUNT</span>
+                <button type="button" class="modal-close" id="close-auth-modal" aria-label="Close account form">&times;</button>
+            </div>
+
+            <div class="modal-content">
+                <h2 id="auth-title">Log in</h2>
+                <p class="modal-description" id="auth-description">Log in to manage your event bookings.</p>
+
+                <form id="auth-form">
+                    <div class="form-field" id="name-field" hidden>
+                        <label for="auth-name">Full name</label>
+                        <input id="auth-name" name="name" type="text" maxlength="255" autocomplete="name">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="auth-email">Email address</label>
+                        <input id="auth-email" name="email" type="email" required autocomplete="email">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="auth-password">Password</label>
+                        <input id="auth-password" name="password" type="password" required autocomplete="current-password">
+                    </div>
+
+                    <div class="form-field" id="confirm-password-field" hidden>
+                        <label for="auth-password-confirmation">Confirm password</label>
+                        <input id="auth-password-confirmation" name="password_confirmation" type="password" autocomplete="new-password">
+                    </div>
+
+                    <p class="form-message" id="auth-message" role="alert"></p>
+                    <button type="submit" class="btn-primary form-submit" id="auth-submit">Log in</button>
+                </form>
+
+                <p class="auth-switch">
+                    <span id="auth-switch-text">Don't have an account?</span>
+                    <button type="button" id="auth-switch-btn">Register</button>
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <!-- General feedback -->
+    <div class="modal-backdrop" id="message-modal" hidden>
+        <section class="modal message-modal" role="dialog" aria-modal="true">
+            <div class="modal-header">
+                <span class="section-kicker">EVENTHUB</span>
+                <button type="button" class="modal-close" id="close-message-modal" aria-label="Close message">&times;</button>
+            </div>
+
+            <div class="modal-content">
+                <h2 id="message-title">Message</h2>
+                <p class="modal-description" id="message-text"></p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-primary" id="message-ok">OK</button>
+            </div>
+        </section>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
