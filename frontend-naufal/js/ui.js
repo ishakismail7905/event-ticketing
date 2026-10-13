@@ -32,3 +32,20 @@ function setButtonLoading(button, loading, text) {
     ? '<span class="spinner-border spinner-border-sm me-2"></span>Please wait…'
     : text;
 }
+// Escape text before putting it inside innerHTML (prevents HTML injection)
+function escapeHtml(value) {
+  const div = document.createElement('div');
+  div.textContent = value ?? '';
+  return div.innerHTML;
+}
+
+// "2026-12-05 20:30:00" → "5 Dec 2026, 8:30 pm"
+function formatDateTime(value) {
+  const date = new Date(value.replace(' ', 'T'));
+  return date.toLocaleString('en-MY', { dateStyle: 'medium', timeStyle: 'short' });
+}
+
+// "0.00" → "Free", "45.00" → "RM 45.00"
+function formatPrice(value) {
+  return Number(value) === 0 ? 'Free' : 'RM ' + Number(value).toFixed(2);
+}
