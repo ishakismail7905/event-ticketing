@@ -1,0 +1,153 @@
+// js/bookings.js: shared bookings page for every logged-in role
+// GET /bookings, PUT /bookings/{id}, DELETE /bookings/{id}, GET /bookings/{id}/qr
+
+const user = requireRole(['customer', 'staff', 'organiser', 'admin']);
+
+const TITLES = {
+  customer: 'My bookings',
+  staff: 'All bookings',
+  organiser: 'Bookings for my events',
+  admin: 'All bookings',
+};
+const STATUS_BADGE = { confirmed: 'bg-success', checked_in: 'bg-primary', cancelled: 'bg-secondary' };
+
+const state = { page: 1, search: '', status: '' };
+const rowsEl = document.getElementById('bookingRows');
+const paginationEl = document.getElementById('pagination');
+const filterForm = document.getElementById('filterForm');
+const qrModal = new bootstrap.Modal(document.getElementById('qrModal'));
+const isCustomer = user && user.role === 'customer';
+const columnCount = isCustomer ? 6 : 7;
+
+if (user) {
+  renderNavbar(user);
+  renderFooter();
+  document.getElementById('pageTitle').textContent = TITLES[user.role];
+  // Customers only see their own bookings, so hide the Customer column
+  if (isCustomer) document.getElementById('customerCol').classList.add('d-none');
+  loadBookings();
+}
+
+async function loadBookings() {
+  rowsEl.innerHTML = `<tr><td colspan="${columnCount}" class="text-center py-4">
+    <div class="spinner-border spinner-border-sm"></div> Loading bookings…</td></tr>`;
+  paginationEl.innerHTML = '';
+
+  const params = new URLSearchParams({ page: state.page, per_page: 5 });
+  if (state.search) params.set('search', state.search);
+  if (state.status) params.set('status', state.status);
+
+  try {
+    const result = await apiRequest('GET', '/bookings?' + params);
+    renderRows(result.data);
+    paginationEl.innerHTML = paginationHtml(result.current_page, result.last_page);
+  } catch (err) {
+    rowsEl.innerHTML = '';
+    showAlert(err.message);
+  }
+}
+
+function renderRows(bookings) {
+  if (bookings.length === 0) {
+    rowsEl.innerHTML = `<tr><td colspan="${columnCount}" class="text-center text-muted py-4">
+      No bookings found.</td></tr>`;
+    return;
+  }
+
+  rowsEl.innerHTML = bookings.map(b => `
+    <tr>
+      <td><code>${escapeHtml(b.booking_reference)}</code></td>
+      <td>${escapeHtml(b.event.title)}
+        <div class="small text-muted">${formatDateTime(b.event.starts_at)}</div></td>
+      ${isCustomer ? '' : `<td>${escapeHtml(b.user.name)}
+        <div class="small text-muted">${escapeHtml(b.user.email)}</div></td>`}
+      <td>${b.quantity}</td>
+      <td>${formatPrice(b.total_price)}</td>
+      <td><span class="badge ${STATUS_BADGE[b.status]}">${b.status.replace('_', ' ')}</span></td>
+      <td class="text-nowrap">${actionButtons(b)}</td>
+    </tr>`).join('');
+}
+
+// Decide which buttons this role gets for this booking
+function actionButtons(b) {
+  const btn = (action, label, style) =>
+    `<button class="btn btn-sm ${style} me-1" data-action="${action}" data-id="${b.id}"
+       data-ref="${escapeHtml(b.booking_reference)}">${label}</button>`;
+
+  const buttons = [];
+  if (b.status !== 'cancelled') buttons.push(btn('qr', 'QR', 'btn-outline-dark'));
+  if (b.status === 'confirmed') {
+    if (!isCustomer) buttons.push(btn('checkin', 'Check in', 'btn-success'));
+    buttons.push(btn('cancel', 'Cancel', 'btn-outline-danger'));
+  }
+  if (user.role === 'admin' && b.status === 'cancelled') {
+    buttons.push(btn('delete', 'Delete', 'btn-danger'));
+  }
+  return buttons.join('') || '<span class="text-muted small">—</span>';
+}
+
+// One click listener for every action button in the table
+rowsEl.addEventListener('click', async (e) => {
+  const button = e.target.closest('[data-action]');
+  if (!button) return;
+  const { action, id, ref } = button.dataset;
+
+  if (action === 'qr') return showQr(id);
+
+  const questions = {
+    checkin: `Check in booking ${ref}?`,
+    cancel: `Cancel booking ${ref}? The tickets go back to the event.`,
+    delete: `Permanently delete booking ${ref}?`,
+  };
+  if (!confirm(questions[action])) return;
+
+  hideAlert();
+  setButtonLoading(button, true);
+  try {
+    const result = action === 'delete'
+      ? await apiRequest('DELETE', `/bookings/${id}`)
+      : await apiRequest('PUT', `/bookings/${id}`, {
+          status: action === 'checkin' ? 'checked_in' : 'cancelled',
+        });
+    showAlert(result.message || 'Booking updated.', 'success');
+  } catch (err) {
+    // 409 = business rule, e.g. "the event has already started"
+    showAlert(err.status === 403 ? 'You are not allowed to do that.' : err.message);
+  }
+  loadBookings();
+});
+
+// QR code comes from the backend, which calls the goQR.me third-party API
+async function showQr(id) {
+  const body = document.getElementById('qrBody');
+  body.innerHTML = '<div class="spinner-border my-4"></div>';
+  qrModal.show();
+
+  try {
+    const { data } = await apiRequest('GET', `/bookings/${id}/qr`);
+    body.innerHTML = `
+      <img src="${data.qr_code}" alt="QR code" class="img-fluid mb-2" style="max-width: 220px;">
+      <p class="mb-1"><code>${escapeHtml(data.booking_reference)}</code></p>
+      <p class="small text-muted mb-0">Generated by ${escapeHtml(data.provider)}
+        ${data.from_cache ? '(cached)' : ''}</p>`;
+  } catch (err) {
+    const msg = err.status === 502 ? 'The QR code service is not responding. Try again later.' : err.message;
+    body.innerHTML = `<p class="text-danger my-3">${escapeHtml(msg)}</p>`;
+  }
+}
+
+paginationEl.addEventListener('click', (e) => {
+  const button = e.target.closest('[data-page]');
+  if (!button || button.parentElement.classList.contains('disabled')) return;
+  state.page = Number(button.dataset.page);
+  loadBookings();
+});
+
+filterForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  hideAlert();
+  state.search = filterForm.search.value.trim();
+  state.status = filterForm.status.value;
+  state.page = 1;
+  loadBookings();
+});
