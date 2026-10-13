@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event form | EventHub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <main class="container py-4" style="max-width: 760px;">
+    <a href="manage-events.html" class="btn btn-link px-0 mb-2">← Back to events</a>
+    <h1 class="h3 mb-3" id="formTitle">New event</h1>
+    <div id="alert" class="alert d-none"></div>
+
+    <form id="eventForm" class="card card-body shadow-sm" novalidate>
+      <div class="row g-3">
+        <div class="col-md-8">
+          <label for="title" class="form-label">Title *</label>
+          <input id="title" name="title" class="form-control" maxlength="150" required>
+          <div class="invalid-feedback" id="title-error">Title is required (max 150 characters).</div>
+        </div>
+        <div class="col-md-4">
+          <label for="category" class="form-label">Category *</label>
+          <input id="category" name="category" class="form-control" list="categoryList" maxlength="50" required>
+          <datalist id="categoryList">
+            <option>Music</option><option>Conference</option><option>Theatre</option><option>Festival</option>
+          </datalist>
+          <div class="invalid-feedback" id="category-error">Category is required.</div>
+        </div>
+
+        <div class="col-12">
+          <label for="description" class="form-label">Description</label>
+          <textarea id="description" name="description" class="form-control" rows="3"></textarea>
+          <div class="invalid-feedback" id="description-error"></div>
+        </div>
+
+        <div class="col-12">
+          <label for="venue_id" class="form-label">Venue *</label>
+          <select id="venue_id" name="venue_id" class="form-select" required></select>
+          <div class="invalid-feedback" id="venue_id-error">Choose a venue.</div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="starts_at" class="form-label">Starts *</label>
+          <input type="datetime-local" id="starts_at" name="starts_at" class="form-control" required>
+          <div class="invalid-feedback" id="starts_at-error">Start must be in the future.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="ends_at" class="form-label">Ends *</label>
+          <input type="datetime-local" id="ends_at" name="ends_at" class="form-control" required>
+          <div class="invalid-feedback" id="ends_at-error">End must be after the start.</div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="ticket_price" class="form-label">Ticket price (RM) *</label>
+          <input type="number" id="ticket_price" name="ticket_price" class="form-control"
+                 min="0" step="0.01" required>
+          <div class="invalid-feedback" id="ticket_price-error">Price must be 0 or more.</div>
+        </div>
+        <div class="col-md-4">
+          <label for="total_tickets" class="form-label">Total tickets *</label>
+          <input type="number" id="total_tickets" name="total_tickets" class="form-control" min="1" required>
+          <div class="form-text" id="capacityHint"></div>
+          <div class="invalid-feedback" id="total_tickets-error">Between 1 and the venue capacity.</div>
+        </div>
+        <div class="col-md-4">
+          <label for="status" class="form-label">Status</label>
+          <select id="status" name="status" class="form-select">
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+          </select>
+          <div class="invalid-feedback" id="status-error"></div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <button type="submit" id="saveBtn" class="btn btn-primary">Save event</button>
+        <a href="manage-events.html" class="btn btn-outline-secondary">Cancel</a>
+      </div>
+    </form>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/event-form.js"></script>
+</body>
+</html>

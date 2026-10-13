@@ -7,8 +7,8 @@ const STUDENT = { name: 'Ahmad Naufal bin Ahmad Fuad', id: 'AM2512021850' };
 const HOME_PAGE = {
   customer: 'bookings.html',
   staff: 'bookings.html',
-  organiser: 'index.html',
-  admin: 'index.html',
+  organiser: 'manage-events.html',
+  admin: 'manage-events.html',
 };
 
 // Navbar links per role ('guest' = not logged in)
