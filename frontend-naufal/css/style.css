@@ -1,0 +1,72 @@
+/* css/style.css: Naufal's EventHub theme */
+
+:root {
+  --brand: #5b3cc4;        /* main colour, change to your own */
+  --brand-dark: #432a99;   /* hover/active shade */
+  --brand-soft: #efeafc;   /* light background tint */
+}
+
+body {
+  background-color: #f7f6fb;
+}
+
+/* Navbar in brand colour (overrides Bootstrap's bg-dark) */
+.navbar {
+  background-color: var(--brand) !important;
+}
+
+/* Primary buttons */
+.btn-primary {
+  --bs-btn-bg: var(--brand);
+  --bs-btn-border-color: var(--brand);
+  --bs-btn-hover-bg: var(--brand-dark);
+  --bs-btn-hover-border-color: var(--brand-dark);
+  --bs-btn-active-bg: var(--brand-dark);
+  --bs-btn-active-border-color: var(--brand-dark);
+  --bs-btn-disabled-bg: var(--brand);
+  --bs-btn-disabled-border-color: var(--brand);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--brand);
+  --bs-btn-border-color: var(--brand);
+  --bs-btn-hover-bg: var(--brand);
+  --bs-btn-hover-border-color: var(--brand);
+  --bs-btn-active-bg: var(--brand-dark);
+  --bs-btn-active-border-color: var(--brand-dark);
+}
+
+/* Pagination */
+.pagination {
+  --bs-pagination-color: var(--brand);
+  --bs-pagination-active-bg: var(--brand);
+  --bs-pagination-active-border-color: var(--brand);
+}
+
+a {
+  color: var(--brand);
+}
+
+h1 {
+  font-weight: 700;
+}
+
+/* Softer cards */
+.card {
+  border: none;
+  border-radius: 14px;
+}
+
+/* Event cards lift slightly on hover */
+#eventList .card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+#eventList .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.75rem 1.5rem rgba(91, 60, 196, 0.15) !important;
+}
+
+/* Table header in brand tint */
+.table thead th {
+  background-color: var(--brand-soft) !important;
+}

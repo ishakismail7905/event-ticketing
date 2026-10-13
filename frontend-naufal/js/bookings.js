@@ -23,7 +23,7 @@ if (user) {
   renderNavbar(user);
   renderFooter();
   document.getElementById('pageTitle').textContent = TITLES[user.role];
-  // Customers only see their own bookings, so hide the Customer column
+  // Customers only see their own bookings
   if (isCustomer) document.getElementById('customerCol').classList.add('d-none');
   loadBookings();
 }
@@ -68,7 +68,7 @@ function renderRows(bookings) {
     </tr>`).join('');
 }
 
-// Decide which buttons this role gets for this booking
+
 function actionButtons(b) {
   const btn = (action, label, style) =>
     `<button class="btn btn-sm ${style} me-1" data-action="${action}" data-id="${b.id}"
