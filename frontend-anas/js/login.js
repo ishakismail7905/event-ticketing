@@ -52,8 +52,8 @@ form.addEventListener('submit', async (event) => {
     const result = await apiRequest('POST', '/auth/login', { email, password });
     saveSession(result);
     const user = result.data.user;
-    // TODO (next step): redirect to the main page for this role.
-    showMessage('Logged in as ' + user.name + ' (' + user.role + ').', 'success');
+    
+        window.location.href = 'index.html';
   } catch (err) {
     if (err.status === 422) {
       // Server-side validation: show each message under its field
