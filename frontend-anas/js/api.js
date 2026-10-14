@@ -28,10 +28,11 @@ async function apiRequest(method, path, body) {
 
   // fetch does NOT fail on 401/403/404/409/422, so we check res.ok ourselves
   if (!res.ok) {
-    if (res.status === 401 && token) {
-      // token expired or invalid: clear the session so the guard sends the user to login
+        if (res.status === 401 && token && path !== '/auth/login') {
+      // token expired or invalid: clear the session and send the user to log in again
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      window.location.href = 'login.html';
     }
     throw {
       status: res.status,
