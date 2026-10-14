@@ -8,8 +8,9 @@ const NAV_LINKS = {
   staff:     [{ href: 'index.html', text: 'Events' }, { href: 'bookings.html', text: 'Bookings' }],
   organiser: [{ href: 'index.html', text: 'Events' }, { href: 'manage-events.html', text: 'My events' },
               { href: 'venues.html', text: 'Venues' }, { href: 'bookings.html', text: 'Bookings' }],
-  admin:     [{ href: 'index.html', text: 'Events' }, { href: 'manage-events.html', text: 'Manage events' },
-              { href: 'venues.html', text: 'Venues' }, { href: 'bookings.html', text: 'Bookings' }],
+    admin:     [{ href: 'index.html', text: 'Events' }, { href: 'manage-events.html', text: 'Manage events' },
+              { href: 'venues.html', text: 'Venues' }, { href: 'bookings.html', text: 'Bookings' },
+              { href: 'users.html', text: 'Users' }],
 };
 
 // nav.js runs on pages without ui.js, so it has its own small escape helper
