@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register - EventHub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="login-wrap">
+    <div class="login-card">
+      <h1 class="h3 site-title mb-1">Create an account</h1>
+      <p class="text-secondary mb-4">Register as a customer to book event tickets.</p>
+
+      <div id="message" class="alert d-none" role="alert"></div>
+
+      <form id="registerForm" novalidate>
+        <div class="mb-3">
+          <label for="name" class="form-label">Full name</label>
+          <input type="text" class="form-control" id="name" maxlength="255" required autocomplete="name">
+          <div class="invalid-feedback" id="nameError"></div>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" required autocomplete="email">
+          <div class="invalid-feedback" id="emailError"></div>
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone <span class="text-secondary">(optional)</span></label>
+          <input type="tel" class="form-control" id="phone" maxlength="20" autocomplete="tel">
+          <div class="invalid-feedback" id="phoneError"></div>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" minlength="8" required autocomplete="new-password">
+          <div class="form-text">At least 8 characters.</div>
+          <div class="invalid-feedback" id="passwordError"></div>
+        </div>
+        <div class="mb-3">
+          <label for="password_confirmation" class="form-label">Confirm password</label>
+          <input type="password" class="form-control" id="password_confirmation" required autocomplete="new-password">
+          <div class="invalid-feedback" id="password_confirmationError"></div>
+        </div>
+        <button type="submit" class="btn btn-brand w-100" id="registerBtn">Create account</button>
+      </form>
+
+      <p class="mt-3 mb-0 text-center">Already registered? <a href="login.html">Log in</a></p>
+    </div>
+
+    <p class="owner-note">Muhammad Anas &middot; AM2512021976</p>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/register.js"></script>
+</body>
+</html>
