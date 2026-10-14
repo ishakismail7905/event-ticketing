@@ -1,0 +1,43 @@
+/* css/style.css - Muhammad Anas (AM2512021976) */
+:root {
+  --ink: #1b2430;
+  --paper: #f3f6f4;
+  --brand: #0e6b5c;
+  --brand-dark: #0a4e43;
+  --accent: #e8a33d;
+  --muted: #5d6b78;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+.btn-brand {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+.btn-brand:hover, .btn-brand:focus {
+  background: var(--brand-dark);
+  border-color: var(--brand-dark);
+  color: #fff;
+}
+
+.login-wrap {
+  max-width: 420px;
+  margin: 8vh auto 2rem;
+  padding: 0 1rem;
+}
+.login-card {
+  background: #fff;
+  border-radius: 6px;
+  border-top: 6px solid var(--brand);
+  padding: 2rem;
+  box-shadow: 0 2px 12px rgba(27, 36, 48, 0.08);
+}
+.site-title { font-weight: 700; color: var(--brand); }
+.owner-note { color: var(--muted); font-size: 0.85rem; text-align: center; margin-top: 1rem; }
+.demo-logins { font-size: 0.85rem; color: var(--muted); }
