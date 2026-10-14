@@ -4,10 +4,10 @@
 // Add a link here each time a new page is built.
 const NAV_LINKS = {
   guest:     [{ href: 'index.html', text: 'Events' }],
-  customer:  [{ href: 'index.html', text: 'Events' }],
-  staff:     [{ href: 'index.html', text: 'Events' }],
-  organiser: [{ href: 'index.html', text: 'Events' }],
-  admin:     [{ href: 'index.html', text: 'Events' }],
+  customer:  [{ href: 'index.html', text: 'Events' }, { href: 'bookings.html', text: 'My bookings' }],
+  staff:     [{ href: 'index.html', text: 'Events' }, { href: 'bookings.html', text: 'Bookings' }],
+  organiser: [{ href: 'index.html', text: 'Events' }, { href: 'bookings.html', text: 'Bookings' }],
+  admin:     [{ href: 'index.html', text: 'Events' }, { href: 'bookings.html', text: 'Bookings' }],
 };
 
 function renderNavbar() {
