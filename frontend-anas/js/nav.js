@@ -6,8 +6,10 @@ const NAV_LINKS = {
   guest:     [{ href: 'index.html', text: 'Events' }],
   customer:  [{ href: 'index.html', text: 'Events' }, { href: 'bookings.html', text: 'My bookings' }],
   staff:     [{ href: 'index.html', text: 'Events' }, { href: 'bookings.html', text: 'Bookings' }],
-  organiser: [{ href: 'index.html', text: 'Events' }, { href: 'bookings.html', text: 'Bookings' }],
-  admin:     [{ href: 'index.html', text: 'Events' }, { href: 'bookings.html', text: 'Bookings' }],
+  organiser: [{ href: 'index.html', text: 'Events' }, { href: 'manage-events.html', text: 'My events' },
+              { href: 'bookings.html', text: 'Bookings' }],
+  admin:     [{ href: 'index.html', text: 'Events' }, { href: 'manage-events.html', text: 'Manage events' },
+              { href: 'bookings.html', text: 'Bookings' }],
 };
 
 function renderNavbar() {
