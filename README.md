@@ -16,7 +16,7 @@ EventHub is a RESTful web API for managing venues, events, ticket availability a
 ## Links
 
 - Project report: _to be added as `docs/report.pdf`_
-- Demonstration video: _YouTube link to be added_
+- Demonstration video: https://youtu.be/_c6sfGLXplU
 - API documentation: [docs/API.md](docs/API.md)
 - Entity relationship diagram: [database/erd.md](database/erd.md)
 
