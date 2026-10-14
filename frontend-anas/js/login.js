@@ -49,11 +49,9 @@ form.addEventListener('submit', async (event) => {
 
   setLoading(true);
   try {
-    const result = await apiRequest('POST', '/auth/login', { email, password });
+            const result = await apiRequest('POST', '/auth/login', { email, password });
     saveSession(result);
-    const user = result.data.user;
-    
-        window.location.href = 'index.html';
+    window.location.href = 'index.html';
   } catch (err) {
     if (err.status === 422) {
       // Server-side validation: show each message under its field
