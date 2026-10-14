@@ -33,7 +33,7 @@ function drawEvents(events) {
     return '<div class="col-md-6"><div class="card h-100"><div class="card-body">' +
       '<span class="badge text-bg-success mb-2">' + esc(e.category) + '</span>' +
       (e.status !== 'published' ? ' <span class="badge text-bg-warning mb-2">' + esc(e.status) + '</span>' : '') +
-      '<h2 class="h5">' + esc(e.title) + '</h2>' +
+      '<h2 class="h5"><a class="text-decoration-none" href="event.html?id=' + e.id + '">' + esc(e.title) + '</a></h2>' +
       '<p class="mb-1 small text-secondary">' + formatDate(e.starts_at) + '</p>' +
       '<p class="mb-2 small">' + esc(e.venue.name) + ', ' + esc(e.venue.city) + '</p>' +
       '<p class="mb-0"><strong>' + formatPrice(e.ticket_price) + '</strong> &middot; ' +
