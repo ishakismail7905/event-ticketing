@@ -114,15 +114,46 @@ function renderBookingArea(event) {
         quantity: Number(form.quantity.value),
       });
       const b = result.data;
-      showAlert(`Booking confirmed! Reference ${b.booking_reference}, total ${formatPrice(b.total_price)}. ` +
-                `See it under My bookings.`, 'success');
-      loadEvent();   // refresh "tickets left"
+      hideAlert();
+      // Replace the form with a ticket-style confirmation
+      bookingEl.innerHTML = `
+        <div class="card card-body text-center ticket-card">
+          <h2 class="h5 text-success mb-1">Booking confirmed! </h2>
+          <div id="newQr" class="my-3"><div class="spinner-border"></div></div>
+          <p class="mb-1"><code>${escapeHtml(b.booking_reference)}</code></p>
+          <p class="mb-3">${b.quantity} ticket(s) · ${formatPrice(b.total_price)}</p>
+          <a href="bookings.html" class="btn btn-primary btn-sm">View my bookings</a>
+        </div>`;
+      refreshDetails();     // update "tickets left"
+      showBookingQr(b.id);  // fetch the QR automatically
     } catch (err) {
       if (err.status === 422) showFieldErrors(err.errors);
       showAlert(err.message);   // e.g. 409 "Only 3 tickets are left for this event."
       setButtonLoading(bookBtn, false, 'Confirm booking');
     }
   });
+}
+
+// Reload only the details panel (keeps the confirmation card visible)
+async function refreshDetails() {
+  try {
+    const result = await apiRequest('GET', `/events/${eventId}`);
+    renderDetails(result.data);
+  } catch {
+    // details stay as they were
+  }
+}
+
+// Show the new booking's QR code (backend calls the goQR.me API)
+async function showBookingQr(bookingId) {
+  const box = document.getElementById('newQr');
+  try {
+    const { data } = await apiRequest('GET', `/bookings/${bookingId}/qr`);
+    box.innerHTML = `<img src="${data.qr_code}" alt="QR ticket" class="img-fluid" style="max-width: 180px;">`;
+  } catch (err) {
+    box.innerHTML = `<p class="small text-danger mb-0">QR not available right now (${escapeHtml(err.message)}).
+      You can open it later from My bookings.</p>`;
+  }
 }
 
 loadEvent();

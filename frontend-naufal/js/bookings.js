@@ -23,7 +23,7 @@ if (user) {
   renderNavbar(user);
   renderFooter();
   document.getElementById('pageTitle').textContent = TITLES[user.role];
-  // Customers only see their own bookings, so hide the Customer column
+  // Customers only see their own bookings
   if (isCustomer) document.getElementById('customerCol').classList.add('d-none');
   loadBookings();
 }
@@ -40,6 +40,7 @@ async function loadBookings() {
   try {
     const result = await apiRequest('GET', '/bookings?' + params);
     renderRows(result.data);
+     if (isCustomer) loadInlineQrs(result.data);
     paginationEl.innerHTML = paginationHtml(result.current_page, result.last_page);
   } catch (err) {
     rowsEl.innerHTML = '';
@@ -56,7 +57,12 @@ function renderRows(bookings) {
 
   rowsEl.innerHTML = bookings.map(b => `
     <tr>
-      <td><code>${escapeHtml(b.booking_reference)}</code></td>
+      <td><code>${escapeHtml(b.booking_reference)}</code>
+        ${isCustomer && b.status !== 'cancelled'
+          ? `<div class="qr-thumb mt-2" id="qr-${b.id}">
+               <div class="spinner-border spinner-border-sm text-secondary"></div></div>`
+          : ''}
+      </td>
       <td>${escapeHtml(b.event.title)}
         <div class="small text-muted">${formatDateTime(b.event.starts_at)}</div></td>
       ${isCustomer ? '' : `<td>${escapeHtml(b.user.name)}
@@ -68,7 +74,7 @@ function renderRows(bookings) {
     </tr>`).join('');
 }
 
-// Decide which buttons this role gets for this booking
+
 function actionButtons(b) {
   const btn = (action, label, style) =>
     `<button class="btn btn-sm ${style} me-1" data-action="${action}" data-id="${b.id}"
@@ -151,3 +157,20 @@ filterForm.addEventListener('submit', (e) => {
   state.page = 1;
   loadBookings();
 });
+// Customers see their QR tickets straight away, without clicking.
+// One request per booking; the backend caches each QR for a day.
+async function loadInlineQrs(bookings) {
+  const active = bookings.filter(b => b.status !== 'cancelled');
+  await Promise.all(active.map(async (b) => {
+    const box = document.getElementById(`qr-${b.id}`);
+    if (!box) return;
+    try {
+      const { data } = await apiRequest('GET', `/bookings/${b.id}/qr`);
+      // data-action="qr" lets the existing click handler open the big popup
+      box.innerHTML = `<img src="${data.qr_code}" alt="QR ticket ${escapeHtml(data.booking_reference)}"
+                         title="Click to enlarge" data-action="qr" data-id="${b.id}">`;
+    } catch {
+      box.innerHTML = '<span class="small text-muted">QR unavailable</span>';
+    }
+  }));
+}
