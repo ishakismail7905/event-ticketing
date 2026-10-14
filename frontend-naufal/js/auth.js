@@ -1,9 +1,9 @@
 // js/auth.js: session, role guard, navbar, footer
 
-// Shown on every page (required by the brief)
+// Shown on every page 
 const STUDENT = { name: 'Ahmad Naufal bin Ahmad Fuad', id: 'AM2512021850' };
 
-// Which page each role lands on after login (we'll change these as pages get built)
+// Which page each role lands on after login 
 const HOME_PAGE = {
   customer: 'bookings.html',
   staff: 'bookings.html',
@@ -11,7 +11,7 @@ const HOME_PAGE = {
   admin: 'manage-events.html',
 };
 
-// Navbar links per role ('guest' = not logged in)
+// Navbar links per role 
 const NAV_LINKS = {
   guest:     [['index.html', 'Events']],
   customer:  [['index.html', 'Events'], ['bookings.html', 'My bookings']],
@@ -95,7 +95,7 @@ function renderNavbar(user) {
   }
 }
 
-// Footer with your name and student ID
+// Footer with name and student ID
 function renderFooter() {
   const footer = document.getElementById('footer');
   footer.className = 'text-center text-muted small py-3 border-top mt-5';
