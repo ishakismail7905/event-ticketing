@@ -11,11 +11,14 @@ CSS and JavaScript plus Bootstrap 5 from a CDN. No build step.
 1. Start MySQL in XAMPP.
 2. Start the backend from the repo root:
 ```
-   cd backend
+   cd D:\projects\event-ticketing\backend
+
    php artisan serve
 ```
 3. In a second terminal, from the repo root:
 ```
+   cd D:\projects\event-ticketing
+
    php -S 127.0.0.1:5501 -t frontend-naufal
 ```
 4. Open http://127.0.0.1:5501/index.html

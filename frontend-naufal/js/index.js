@@ -70,8 +70,8 @@ function renderEvents(events) {
               <span class="badge bg-info text-dark">${escapeHtml(event.category)}</span>${statusBadge}
             </div>
             <h2 class="h5 card-title">${escapeHtml(event.title)}</h2>
-            <p class="small text-muted mb-1">📅 ${formatDateTime(event.starts_at)}</p>
-            <p class="small text-muted mb-3">📍 ${escapeHtml(event.venue.name)}, ${escapeHtml(event.venue.city)}</p>
+            <p class="small text-muted mb-1"> ${formatDateTime(event.starts_at)}</p>
+            <p class="small text-muted mb-3"> ${escapeHtml(event.venue.name)}, ${escapeHtml(event.venue.city)}</p>
             <div class="mt-auto d-flex justify-content-between align-items-center">
               <strong>${formatPrice(event.ticket_price)}</strong>
               <span class="small ${soldOut ? 'text-danger' : 'text-success'}">
